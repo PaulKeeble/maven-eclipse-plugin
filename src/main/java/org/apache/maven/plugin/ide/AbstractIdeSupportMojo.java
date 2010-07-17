@@ -20,15 +20,7 @@ package org.apache.maven.plugin.ide;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -38,14 +30,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactCollector;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.DebugResolutionListener;
-import org.apache.maven.artifact.resolver.ResolutionNode;
-import org.apache.maven.artifact.resolver.WarningResolutionListener;
+import org.apache.maven.artifact.resolver.*;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -735,7 +720,7 @@ public abstract class AbstractIdeSupportMojo
         throws MojoExecutionException
     {
         // keep it sorted, this should avoid random classpath order in tests
-        Set artifacts = new TreeSet();
+        Set artifacts = new LinkedHashSet();
 
         for ( Iterator dependencies = getProject().getDependencies().iterator(); dependencies.hasNext(); )
         {

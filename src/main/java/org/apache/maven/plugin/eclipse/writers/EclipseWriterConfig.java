@@ -33,7 +33,7 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * @author Fabrizio Giustina
- * @version $Id: EclipseWriterConfig.java 798336 2009-07-27 23:54:06Z aheritier $
+ * @version $Id: EclipseWriterConfig.java 934209 2010-04-14 21:50:23Z fgiust $
  */
 public class EclipseWriterConfig
 {
@@ -150,6 +150,11 @@ public class EclipseWriterConfig
     private WorkspaceConfiguration workspaceConfiguration;
 
     private List linkedResources;
+    
+    /**
+     * @See {@link EclipsePlugin#classpathContainersLast}
+     */
+    private boolean classpathContainersLast;
 
     public WorkspaceConfiguration getWorkspaceConfiguration()
     {
@@ -184,42 +189,42 @@ public class EclipseWriterConfig
             // TODO get the right comparator depending on orderDependencies={name,nearness..};
             // if none specified it could use a NullComparator to reduce the number of
             // conditions that have to be checked
-            Comparator depsByArtifactId = new Comparator()
-            {
-                public int compare( Object o1, Object o2 )
-                {
-                    int result =
-                        ( (IdeDependency) o1 ).getArtifactId().compareToIgnoreCase(
-                                                                                    ( (IdeDependency) o2 ).getArtifactId() );
-                    if ( result != 0 )
-                    {
-                        return result;
-                    }
-                    if ( ( (IdeDependency) o1 ).getClassifier() != null
-                        && ( (IdeDependency) o2 ).getClassifier() != null )
-                    {
-                        result =
-                            ( (IdeDependency) o1 ).getClassifier().compareToIgnoreCase(
-                                                                                        ( (IdeDependency) o2 ).getClassifier() );
-                        if ( result != 0 )
-                        {
-                            return result;
-                        }
-                    }
-                    result = ( (IdeDependency) o1 ).getType().compareToIgnoreCase( ( (IdeDependency) o2 ).getType() );
-                    if ( result != 0 )
-                    {
-                        return result;
-                    }
-                    result =
-                        ( (IdeDependency) o1 ).getGroupId().compareToIgnoreCase( ( (IdeDependency) o2 ).getGroupId() );
-                    return result;
-                }
-            };
+//            Comparator depsByArtifactId = new Comparator()
+//            {
+//                public int compare( Object o1, Object o2 )
+//                {
+//                    int result =
+//                        ( (IdeDependency) o1 ).getArtifactId().compareToIgnoreCase(
+//                                                                                    ( (IdeDependency) o2 ).getArtifactId() );
+//                    if ( result != 0 )
+//                    {
+//                        return result;
+//                    }
+//                    if ( ( (IdeDependency) o1 ).getClassifier() != null
+//                        && ( (IdeDependency) o2 ).getClassifier() != null )
+//                    {
+//                        result =
+//                            ( (IdeDependency) o1 ).getClassifier().compareToIgnoreCase(
+//                                                                                        ( (IdeDependency) o2 ).getClassifier() );
+//                        if ( result != 0 )
+//                        {
+//                            return result;
+//                        }
+//                    }
+//                    result = ( (IdeDependency) o1 ).getType().compareToIgnoreCase( ( (IdeDependency) o2 ).getType() );
+//                    if ( result != 0 )
+//                    {
+//                        return result;
+//                    }
+//                    result =
+//                        ( (IdeDependency) o1 ).getGroupId().compareToIgnoreCase( ( (IdeDependency) o2 ).getGroupId() );
+//                    return result;
+//                }
+//            };
 
-            orderedDeps = new IdeDependency[deps.length];
-            System.arraycopy( deps, 0, orderedDeps, 0, deps.length );
-            Arrays.sort( orderedDeps, depsByArtifactId );
+            orderedDeps = deps;
+            //System.arraycopy( deps, 0, orderedDeps, 0, deps.length );
+            //Arrays.sort( orderedDeps, depsByArtifactId );
         }
     }
 
@@ -621,6 +626,26 @@ public class EclipseWriterConfig
     public void setLinkedResources( List linkedResources )
     {
         this.linkedResources = linkedResources;
+    }
+
+    
+    /**
+     * Returns the classpathContainersLast.
+     * @return the classpathContainersLast
+     */
+    public boolean isClasspathContainersLast()
+    {
+        return classpathContainersLast;
+    }
+
+    
+    /**
+     * Sets the classpathContainersLast.
+     * @param classpathContainersLast the classpathContainersLast to set
+     */
+    public void setClasspathContainersLast(boolean classpathContainersLast)
+    {
+        this.classpathContainersLast = classpathContainersLast;
     }
 
 }
